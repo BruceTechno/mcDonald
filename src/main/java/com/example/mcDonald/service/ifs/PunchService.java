@@ -1,6 +1,5 @@
 package com.example.mcDonald.service.ifs;
 
-import com.example.mcDonald.vo.request.PunchInRequest;
 import com.example.mcDonald.vo.response.PunchInResponse;
 import com.example.mcDonald.vo.response.PunchOutResponse;
 

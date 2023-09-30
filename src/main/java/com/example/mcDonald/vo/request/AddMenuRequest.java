@@ -6,19 +6,20 @@ public class AddMenuRequest {
     private int serveTime;
     private String description;
     private String img;
-    private int sales;
+    private int status;
 //==
 
     public AddMenuRequest() {
     }
 //==
 
-    public int getSales() {
-        return sales;
+
+    public int getStatus() {
+        return status;
     }
 
-    public void setSales(int sales) {
-        this.sales = sales;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getName() {

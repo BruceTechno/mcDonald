@@ -8,14 +8,17 @@ import com.example.mcDonald.repository.StaffDao;
 import com.example.mcDonald.service.ifs.MenuService;
 import com.example.mcDonald.vo.request.AddMenuRequest;
 import com.example.mcDonald.vo.request.DeleteMenuRequest;
+import com.example.mcDonald.vo.request.SearchMenuRequest;
 import com.example.mcDonald.vo.response.AddMenuResponse;
 import com.example.mcDonald.vo.response.AddStaffResponse;
 import com.example.mcDonald.vo.response.DeleteMenuResponse;
+import com.example.mcDonald.vo.response.SearchMenuResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Service
 public class MenuServiceImpl implements MenuService {
@@ -36,7 +39,6 @@ public class MenuServiceImpl implements MenuService {
         if (staff.getIdentity() != 3) {
             return new AddMenuResponse("unauthorized");
         }
-
         String name = request.getName();
         int price = request.getPrice();
         int serveTime = request.getServeTime();
@@ -46,7 +48,7 @@ public class MenuServiceImpl implements MenuService {
         if (!StringUtils.hasText(name) || !StringUtils.hasText(description) || !StringUtils.hasText(img)){
             return new AddMenuResponse(RtnCode.CANNOT_EMPTY.getMessage());
         }
-        if (price < 0 || serveTime < 0 || serveTime >1 ){
+        if (price < 0 || serveTime < 0 || serveTime > 2 ){
             return new AddMenuResponse(RtnCode.DATA_ERROR.getMessage());
         }
 
@@ -70,6 +72,34 @@ public class MenuServiceImpl implements MenuService {
         if (staff.getIdentity() != 3) {
             return new DeleteMenuResponse("unauthorized");
         }
-        return null;
+        int id = request.getId();
+        int status = request.getStatus();
+//        int result = menuDao.updateMenuStatus(status,id);
+//        if (result == 0 ){
+//            return new DeleteMenuResponse("update failed");
+//        }
+        return new DeleteMenuResponse(RtnCode.SUCCESSFUL.getMessage());
+    }
+
+    @Override
+    public SearchMenuResponse allMenu() {
+        return new SearchMenuResponse(menuDao.findAll());
+    }
+
+    @Override
+    public SearchMenuResponse searchMenuDistinctly(SearchMenuRequest request) {
+        String keyword = request.getKeyword();
+
+        List<Menu> result = menuDao.distinctSearchMenu(keyword);
+        if (result.isEmpty()){
+            return new SearchMenuResponse(RtnCode.NOT_FOUND.getMessage());
+        }
+        return new SearchMenuResponse(result,RtnCode.SUCCESSFUL.getMessage());
+    }
+
+    @Override
+    public SearchMenuResponse searchBestSellingMenu(SearchMenuRequest request) {
+
+        return new SearchMenuResponse(menuDao.searchTopMenu(request.getLimitNum()));
     }
 }

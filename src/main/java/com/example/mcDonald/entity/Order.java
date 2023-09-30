@@ -1,31 +1,41 @@
 package com.example.mcDonald.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "order")
+@Table(name = "order_info")
+
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
     @Column(name = "order_id")
     private int orderId;
+    @Column(name = "menu_id")
+    private int menuId;
     @Column(name = "quantity")
     private int qty;
     @Column(name = "consumer_id")
-    private int consumerId;
+    private String consumerId;
     @Column(name = "time")
-    private LocalDate time;
+    private LocalDateTime time = LocalDateTime.now();
 //==
 
 
     public Order() {
     }
 //==
+
+    public int getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
+    }
 
     public int getId() {
         return id;
@@ -51,19 +61,19 @@ public class Order {
         this.qty = qty;
     }
 
-    public int getConsumerId() {
+    public String getConsumerId() {
         return consumerId;
     }
 
-    public void setConsumerId(int consumerId) {
+    public void setConsumerId(String consumerId) {
         this.consumerId = consumerId;
     }
 
-    public LocalDate getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(LocalDate time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 }

@@ -1,18 +1,20 @@
 package com.example.mcDonald.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "menu")
 public class Menu {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
     @Column(name = "name")
     private String name;
+    @Column(name = "category")
+    private String category;
+    @Column(name = "qty")
+    private int qty;
     @Column(name = "price")
     private int price;
     @Column(name = "serve_time")
@@ -38,6 +40,22 @@ public class Menu {
         this.img = img;
     }
     //==
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
 
     public int getId() {
         return id;
