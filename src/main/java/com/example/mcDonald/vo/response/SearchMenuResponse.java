@@ -10,7 +10,13 @@ public class SearchMenuResponse {
     private List<Menu> menuList;
     private Menu menu;
     private String message;
+    private List<String> categoryList;
 //==
+
+    public SearchMenuResponse(String message, List<String> categoryList) {
+        this.message = message;
+        this.categoryList = categoryList;
+    }
 
     public SearchMenuResponse(String message) {
         this.message = message;
@@ -33,6 +39,14 @@ public class SearchMenuResponse {
         this.message = message;
     }
     //==
+
+    public List<String> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<String> categoryList) {
+        this.categoryList = categoryList;
+    }
 
     public List<Menu> getMenuList() {
         return menuList;

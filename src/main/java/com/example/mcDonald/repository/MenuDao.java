@@ -47,4 +47,10 @@ public interface MenuDao extends JpaRepository<Menu,Integer> {
     @Modifying
     @Query(value = "select * from menu m  where sales order by sales DESC limit :limitNum",nativeQuery = true)
     public List<Menu> searchTopMenu(@Param("limitNum")int limitNum);
+
+    @Transactional
+    @Modifying
+    @Query(value = "select distinct category from menu m ",nativeQuery = true)
+    public List<String> allCategory();
+
 }

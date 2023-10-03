@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface OrderDao extends JpaRepository<Order,Integer> {
 
     @Query(value = "select max(order_id) from mcdonald.order_info " ,nativeQuery = true)
     public int searchMaxOrderId();
+
+    public List<Order> findAllByConsumerId(String consumerId);
 }

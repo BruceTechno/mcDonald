@@ -38,6 +38,9 @@ public class MenuController {
     public SearchMenuResponse searchBestSellingMenu(@RequestBody SearchMenuRequest request) {
         return menuService.searchBestSellingMenu(request);
     }
-
+    @GetMapping(value = "all_category")
+    public SearchMenuResponse allCategory() {
+        return menuService.allCategory();
+    }
 
 }

@@ -15,4 +15,5 @@ public interface MenuService {
     public SearchMenuResponse allMenu ();
     public SearchMenuResponse searchMenuDistinctly(SearchMenuRequest request);
     public SearchMenuResponse searchBestSellingMenu(SearchMenuRequest request);
+    public SearchMenuResponse allCategory();
 }

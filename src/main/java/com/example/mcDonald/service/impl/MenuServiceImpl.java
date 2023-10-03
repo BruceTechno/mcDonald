@@ -99,7 +99,12 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public SearchMenuResponse searchBestSellingMenu(SearchMenuRequest request) {
-
         return new SearchMenuResponse(menuDao.searchTopMenu(request.getLimitNum()));
+    }
+
+    @Override
+    public SearchMenuResponse allCategory() {
+        return new SearchMenuResponse(RtnCode.SUCCESSFUL.getMessage(),menuDao.allCategory());
+//        return new SearchMenuResponse(menuDao.allCategory(),RtnCode.SUCCESSFUL.getMessage());
     }
 }

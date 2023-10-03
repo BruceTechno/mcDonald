@@ -9,6 +9,7 @@ import com.example.mcDonald.service.ifs.OrderService;
 import com.example.mcDonald.vo.request.AddOrderRequest;
 import com.example.mcDonald.vo.response.AddOrderResponse;
 import com.example.mcDonald.vo.response.AddStaffResponse;
+import com.example.mcDonald.vo.response.SearchOrderResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -60,12 +61,23 @@ public class OrderServiceImpl implements OrderService {
             item.setOrderId(latestOrderId+1);
             // set user id
             item.setConsumerId(loginAccount);
-
         }
         orderDao.saveAll(orderList);
-
-
-
         return new AddOrderResponse(RtnCode.SUCCESSFUL.getMessage(),orderList);
+    }
+
+    @Override
+    public SearchOrderResponse searchOrderByConsumerId(HttpSession session) {
+        String loginAccount = (String) session.getAttribute("account");
+        String loginPwd = (String) session.getAttribute("pwd");
+        if (!StringUtils.hasText(loginAccount) || !StringUtils.hasText(loginPwd)) {
+            return new SearchOrderResponse(RtnCode.PLEASE_LOGIN_FIRST.getMessage());
+        }
+        List<Order> result = orderDao.findAllByConsumerId(loginAccount);
+        if (result.isEmpty()){
+            return new SearchOrderResponse(RtnCode.NOT_FOUND.getMessage());
+        }
+
+        return new SearchOrderResponse(RtnCode.SUCCESSFUL.getMessage(),result);
     }
 }
