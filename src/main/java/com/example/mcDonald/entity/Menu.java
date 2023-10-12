@@ -13,8 +13,8 @@ public class Menu {
     private String name;
     @Column(name = "category")
     private String category;
-    @Column(name = "qty")
-    private int qty;
+    @Column(name = "inventory")
+    private int inventory;
     @Column(name = "price")
     private int price;
     @Column(name = "serve_time")
@@ -25,13 +25,17 @@ public class Menu {
     private String img;
     @Column(name = "sales")
     private int sales;
+    @Column(name = "status")
+    private int status;
 //==
 
 
     public Menu() {
     }
 
-    public Menu( String name, int price, int serveTime, String description, String img) {
+
+
+    public Menu(String name, int price, int serveTime, String description, String img) {
 
         this.name = name;
         this.price = price;
@@ -45,16 +49,24 @@ public class Menu {
         return category;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public void setCategory(String category) {
         this.category = category;
     }
 
-    public int getQty() {
-        return qty;
+    public int getInventory() {
+        return inventory;
     }
 
-    public void setQty(int qty) {
-        this.qty = qty;
+    public void setInventory(int inventory) {
+        this.inventory = inventory;
     }
 
     public int getId() {

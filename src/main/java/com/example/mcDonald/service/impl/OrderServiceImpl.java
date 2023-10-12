@@ -8,15 +8,13 @@ import com.example.mcDonald.repository.OrderDao;
 import com.example.mcDonald.service.ifs.OrderService;
 import com.example.mcDonald.vo.request.AddOrderRequest;
 import com.example.mcDonald.vo.response.AddOrderResponse;
-import com.example.mcDonald.vo.response.AddStaffResponse;
+import com.example.mcDonald.vo.response.GetMenuFromOrderByConsumerId;
 import com.example.mcDonald.vo.response.SearchOrderResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +27,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public AddOrderResponse addOrder(AddOrderRequest request, HttpSession session) {
         //抓訂單編號 => 新增前先付款 => 付款完訂單成立 =>菜單銷售額 + 1
+        //todo shopping cart 商品--
         String loginAccount = (String) session.getAttribute("account");
         String loginPwd = (String) session.getAttribute("pwd");
         if (!StringUtils.hasText(loginAccount) || !StringUtils.hasText(loginPwd)) {
@@ -49,13 +48,13 @@ public class OrderServiceImpl implements OrderService {
                 return new AddOrderResponse("無此菜單");
             }
             // inventory check
-            if (menu.get().getQty() < item.getQty()){
+            if (menu.get().getInventory() < item.getQty()){
                 return new AddOrderResponse("Inventory not enough");
             }
             // 銷售量++
             menu.get().setSales(menu.get().getSales()+ item.getQty());
             // inventory --
-            menu.get().setQty(menu.get().getQty()- item.getQty());
+            menu.get().setInventory(menu.get().getInventory()- item.getQty());
             menuDao.save(menu.get());
             // search the latest order id to set
             item.setOrderId(latestOrderId+1);
@@ -77,7 +76,21 @@ public class OrderServiceImpl implements OrderService {
         if (result.isEmpty()){
             return new SearchOrderResponse(RtnCode.NOT_FOUND.getMessage());
         }
-
         return new SearchOrderResponse(RtnCode.SUCCESSFUL.getMessage(),result);
+    }
+
+    @Override
+    public GetMenuFromOrderByConsumerId menuByConsumerId(HttpSession session) {
+        String loginAccount = (String) session.getAttribute("account");
+        String loginPwd = (String) session.getAttribute("pwd");
+        if (!StringUtils.hasText(loginAccount) || !StringUtils.hasText(loginPwd)) {
+            return new GetMenuFromOrderByConsumerId(RtnCode.PLEASE_LOGIN_FIRST.getMessage());
+        }
+        List<GetMenuFromOrderByConsumerId> result = orderDao.getMenuFromOrderByConsumerId(loginAccount);
+        if (result.isEmpty()){
+            return new GetMenuFromOrderByConsumerId(RtnCode.NOT_FOUND.getMessage());
+        }
+
+        return new GetMenuFromOrderByConsumerId(RtnCode.SUCCESSFUL.getMessage(),result);
     }
 }
